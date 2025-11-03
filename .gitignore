@@ -1,0 +1,49 @@
+# 可执行文件
+*.exe
+*.out
+*.app
+.idea
+CMakeLists.txt
+/cmake-build-debug
+
+# 对象文件
+*.o
+*.obj
+*.ko
+
+# 编译产生的文件
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# 调试文件
+*.su
+*.idb
+*.pdb
+
+# 内核模块编译生成的额外文件
+*.mod*
+*.cmd
+.tmp_versions/
+
+# 预编译头文件
+*.gch
+*.pch
+
+# 其他编译产物
+*.s
+*.i
+*.ii
+
+# IDE 相关文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*.xml
+
+# 构建目录
+build/
+Debug/
+Release/
