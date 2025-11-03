@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "sqlite3.h"
 
-// é”™è¯¯å¤„ç†å®
+// ´íÎó´¦Àíºê
 #define DB_CHECK(db, rc, msg) \
     if(rc != SQLITE_OK) { \
         fprintf(stderr, "%s: %s\n", msg, sqlite3_errmsg(db)); \
@@ -10,7 +10,7 @@
         return -1; \
     }
 
-// å›è°ƒå‡½æ•°ï¼Œç”¨äºæŸ¥è¯¢ç»“æœçš„è¾“å‡º
+// »Øµ÷º¯Êı£¬ÓÃÓÚ²éÑ¯½á¹ûµÄÊä³ö
 static int callback(void *data, int argc, char **argv, char **azColName) {
     int i;
     printf("%s: ", (const char*)data);
@@ -28,16 +28,16 @@ int main() {
     int rc;
     const char *db_name = "embedded_device.db";
 
-    printf("=== SQLite åµŒå…¥å¼å¼€å‘ç¤ºä¾‹ ===\n");
+    printf("=== SQLite Ç¶ÈëÊ½¿ª·¢Ê¾Àı ===\n");
 
-    // 1. æ‰“å¼€/åˆ›å»ºæ•°æ®åº“
-    printf("1. æ‰“å¼€æ•°æ®åº“...\n");
+    // 1. ´ò¿ª/´´½¨Êı¾İ¿â
+    printf("1. ´ò¿ªÊı¾İ¿â...\n");
     rc = sqlite3_open(db_name, &db);
-    DB_CHECK(db, rc, "æ— æ³•æ‰“å¼€æ•°æ®åº“");
-    printf("æ•°æ®åº“æ‰“å¼€æˆåŠŸ: %s\n", db_name);
+    DB_CHECK(db, rc, "ÎŞ·¨´ò¿ªÊı¾İ¿â");
+    printf("Êı¾İ¿â´ò¿ª³É¹¦: %s\n", db_name);
 
-    // 2. åˆ›å»ºè¡¨ - è®¾å¤‡é…ç½®è¡¨
-    printf("\n2. åˆ›å»ºè®¾å¤‡é…ç½®è¡¨...\n");
+    // 2. ´´½¨±í - Éè±¸ÅäÖÃ±í
+    printf("\n2. ´´½¨Éè±¸ÅäÖÃ±í...\n");
     const char *create_table_sql =
         "CREATE TABLE IF NOT EXISTS device_config ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -48,15 +48,15 @@ int main() {
 
     rc = sqlite3_exec(db, create_table_sql, 0, 0, &err_msg);
     if(rc != SQLITE_OK) {
-        fprintf(stderr, "åˆ›è¡¨å¤±è´¥: %s\n", err_msg);
+        fprintf(stderr, "´´±íÊ§°Ü: %s\n", err_msg);
         sqlite3_free(err_msg);
         sqlite3_close(db);
         return -1;
     }
-    printf("è®¾å¤‡é…ç½®è¡¨åˆ›å»ºæˆåŠŸ\n");
+    printf("Éè±¸ÅäÖÃ±í´´½¨³É¹¦\n");
 
-    // 3. æ’å…¥é…ç½®æ•°æ®
-    printf("\n3. æ’å…¥é…ç½®æ•°æ®...\n");
+    // 3. ²åÈëÅäÖÃÊı¾İ
+    printf("\n3. ²åÈëÅäÖÃÊı¾İ...\n");
     const char *insert_sql =
         "INSERT OR REPLACE INTO device_config (param_name, param_value) VALUES "
         "('device_name', 'SmartSensor_001'),"
@@ -66,55 +66,55 @@ int main() {
 
     rc = sqlite3_exec(db, insert_sql, 0, 0, &err_msg);
     if(rc != SQLITE_OK) {
-        fprintf(stderr, "æ’å…¥æ•°æ®å¤±è´¥: %s\n", err_msg);
+        fprintf(stderr, "²åÈëÊı¾İÊ§°Ü: %s\n", err_msg);
         sqlite3_free(err_msg);
     } else {
-        printf("é…ç½®æ•°æ®æ’å…¥æˆåŠŸ\n");
+        printf("ÅäÖÃÊı¾İ²åÈë³É¹¦\n");
     }
 
-    // 4. æŸ¥è¯¢æ‰€æœ‰é…ç½®
-    printf("\n4. æŸ¥è¯¢è®¾å¤‡é…ç½®...\n");
+    // 4. ²éÑ¯ËùÓĞÅäÖÃ
+    printf("\n4. ²éÑ¯Éè±¸ÅäÖÃ...\n");
     const char *select_sql = "SELECT * FROM device_config;";
-    const char *query_title = "è®¾å¤‡é…ç½®";
+    const char *query_title = "Éè±¸ÅäÖÃ";
 
     rc = sqlite3_exec(db, select_sql, callback, (void*)query_title, &err_msg);
     if(rc != SQLITE_OK) {
-        fprintf(stderr, "æŸ¥è¯¢å¤±è´¥: %s\n", err_msg);
+        fprintf(stderr, "²éÑ¯Ê§°Ü: %s\n", err_msg);
         sqlite3_free(err_msg);
     }
 
-    // 5. ä½¿ç”¨é¢„å¤„ç†è¯­å¥æ›´æ–°æ•°æ®ï¼ˆæ›´å®‰å…¨çš„æ–¹å¼ï¼‰
-    printf("\n5. ä½¿ç”¨é¢„å¤„ç†è¯­å¥æ›´æ–°é…ç½®...\n");
+    // 5. Ê¹ÓÃÔ¤´¦ÀíÓï¾ä¸üĞÂÊı¾İ£¨¸ü°²È«µÄ·½Ê½£©
+    printf("\n5. Ê¹ÓÃÔ¤´¦ÀíÓï¾ä¸üĞÂÅäÖÃ...\n");
     sqlite3_stmt *stmt;
     const char *update_sql = "UPDATE device_config SET param_value = ? WHERE param_name = ?;";
 
     rc = sqlite3_prepare_v2(db, update_sql, -1, &stmt, NULL);
-    DB_CHECK(db, rc, "é¢„å¤„ç†è¯­å¥å‡†å¤‡å¤±è´¥");
+    DB_CHECK(db, rc, "Ô¤´¦ÀíÓï¾ä×¼±¸Ê§°Ü");
 
-    // ç»‘å®šå‚æ•°
-    sqlite3_bind_text(stmt, 1, "1500", -1, SQLITE_STATIC);  // æ–°çš„é‡‡æ ·ç‡
+    // °ó¶¨²ÎÊı
+    sqlite3_bind_text(stmt, 1, "1500", -1, SQLITE_STATIC);  // ĞÂµÄ²ÉÑùÂÊ
     sqlite3_bind_text(stmt, 2, "sampling_rate", -1, SQLITE_STATIC);
 
     rc = sqlite3_step(stmt);
     if(rc == SQLITE_DONE) {
-        printf("é‡‡æ ·ç‡æ›´æ–°æˆåŠŸ\n");
+        printf("²ÉÑùÂÊ¸üĞÂ³É¹¦\n");
     } else {
-        fprintf(stderr, "æ›´æ–°å¤±è´¥: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "¸üĞÂÊ§°Ü: %s\n", sqlite3_errmsg(db));
     }
 
     sqlite3_finalize(stmt);
 
-    // 6. æŸ¥è¯¢æ›´æ–°åçš„ç»“æœ
-    printf("\n6. æŸ¥è¯¢æ›´æ–°åçš„é…ç½®...\n");
+    // 6. ²éÑ¯¸üĞÂºóµÄ½á¹û
+    printf("\n6. ²éÑ¯¸üĞÂºóµÄÅäÖÃ...\n");
     rc = sqlite3_exec(db, "SELECT param_name, param_value FROM device_config WHERE param_name='sampling_rate';",
-                     callback, (void*)"æ›´æ–°ç»“æœ", &err_msg);
+                     callback, (void*)"¸üĞÂ½á¹û", &err_msg);
     if(rc != SQLITE_OK) {
-        fprintf(stderr, "æŸ¥è¯¢å¤±è´¥: %s\n", err_msg);
+        fprintf(stderr, "²éÑ¯Ê§°Ü: %s\n", err_msg);
         sqlite3_free(err_msg);
     }
 
-    // 7. åˆ›å»ºä¼ æ„Ÿå™¨æ•°æ®è¡¨å¹¶æ’å…¥ç¤ºä¾‹æ•°æ®
-    printf("\n7. ç®¡ç†ä¼ æ„Ÿå™¨æ•°æ®...\n");
+    // 7. ´´½¨´«¸ĞÆ÷Êı¾İ±í²¢²åÈëÊ¾ÀıÊı¾İ
+    printf("\n7. ¹ÜÀí´«¸ĞÆ÷Êı¾İ...\n");
     const char *create_sensor_table =
         "CREATE TABLE IF NOT EXISTS sensor_data ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -125,9 +125,9 @@ int main() {
 
     rc = sqlite3_exec(db, create_sensor_table, 0, 0, &err_msg);
     if(rc == SQLITE_OK) {
-        printf("ä¼ æ„Ÿå™¨æ•°æ®è¡¨åˆ›å»ºæˆåŠŸ\n");
+        printf("´«¸ĞÆ÷Êı¾İ±í´´½¨³É¹¦\n");
 
-        // æ’å…¥ä¸€äº›ç¤ºä¾‹ä¼ æ„Ÿå™¨æ•°æ®
+        // ²åÈëÒ»Ğ©Ê¾Àı´«¸ĞÆ÷Êı¾İ
         const char *insert_sensor_data =
             "INSERT INTO sensor_data (sensor_type, value) VALUES "
             "('temperature', 25.3),"
@@ -137,12 +137,12 @@ int main() {
 
         rc = sqlite3_exec(db, insert_sensor_data, 0, 0, &err_msg);
         if(rc == SQLITE_OK) {
-            printf("ä¼ æ„Ÿå™¨æ•°æ®æ’å…¥æˆåŠŸ\n");
+            printf("´«¸ĞÆ÷Êı¾İ²åÈë³É¹¦\n");
         }
     }
 
-    // 8. æŸ¥è¯¢æ¸©åº¦æ•°æ®ç»Ÿè®¡
-    printf("\n8. æ¸©åº¦æ•°æ®ç»Ÿè®¡...\n");
+    // 8. ²éÑ¯ÎÂ¶ÈÊı¾İÍ³¼Æ
+    printf("\n8. ÎÂ¶ÈÊı¾İÍ³¼Æ...\n");
     const char *stats_sql =
         "SELECT "
         "COUNT(*) as count, "
@@ -151,17 +151,17 @@ int main() {
         "MIN(value) as min_temp "
         "FROM sensor_data WHERE sensor_type='temperature';";
 
-    rc = sqlite3_exec(db, stats_sql, callback, (void*)"æ¸©åº¦ç»Ÿè®¡", &err_msg);
+    rc = sqlite3_exec(db, stats_sql, callback, (void*)"ÎÂ¶ÈÍ³¼Æ", &err_msg);
     if(rc != SQLITE_OK) {
-        fprintf(stderr, "ç»Ÿè®¡æŸ¥è¯¢å¤±è´¥: %s\n", err_msg);
+        fprintf(stderr, "Í³¼Æ²éÑ¯Ê§°Ü: %s\n", err_msg);
         sqlite3_free(err_msg);
     }
 
-    // 9. å…³é—­æ•°æ®åº“
-    printf("\n9. å…³é—­æ•°æ®åº“...\n");
+    // 9. ¹Ø±ÕÊı¾İ¿â
+    printf("\n9. ¹Ø±ÕÊı¾İ¿â...\n");
     sqlite3_close(db);
-    printf("æ•°æ®åº“å·²å…³é—­\n");
-    printf("=== ç¤ºä¾‹ç¨‹åºç»“æŸ ===\n");
+    printf("Êı¾İ¿âÒÑ¹Ø±Õ\n");
+    printf("=== Ê¾Àı³ÌĞò½áÊø ===\n");
 
     return 0;
 }
